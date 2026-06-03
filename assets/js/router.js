@@ -8,6 +8,10 @@ import {
   eliminarUsuario,
 } from "./utils/storage.js";
 
+import { renderDashboardAdmin } from "./pages/dashboardAdmin.js";
+
+import { renderDashboardTechnician } from "./pages/dashboardTechnician.js";
+
 export async function router() {
   const app = document.getElementById("app");
   const ruta = location.hash || "#login";
@@ -54,6 +58,55 @@ export async function router() {
     return;
   }
 
+  // DASHBOARD ADMIN
+  if (ruta === "#dashboard-admin") {
+
+    const usuario = obtenerUsuario();
+
+    if (!usuario) {
+      location.hash = "#login";
+      return;
+    }
+
+    app.innerHTML = await renderDashboardAdmin();
+
+    const logoutBtn = document.getElementById("logout-btn");
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        eliminarUsuario();
+        location.hash = "#login";
+      });
+    }
+
+    return;
+  }
+
+  // DASHBOARD TECHNICIAN
+  if (ruta === "#dashboard-technician") {
+
+    const usuario = obtenerUsuario();
+
+    if (!usuario) {
+      location.hash = "#login";
+      return;
+    }
+
+    app.innerHTML = await renderDashboardTechnician();
+
+    document.getElementById( "technician-name").textContent = usuario.name;
+
+    document.getElementById("technician-email").textContent = usuario.email;
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+        eliminarUsuario();
+        location.hash = "#login";
+      });
+
+    return;
+  }
+
+  // LOGIN
   if (ruta === "#login") {
     app.innerHTML = await renderlogin();
 
@@ -79,8 +132,18 @@ export async function router() {
 
       guardarUsuario(usuario);
 
+      if (usuario.role === "admin") {
+        location.hash = "#dashboard-admin";
+        return;
+      }
+
       if (usuario.role === "client") {
         location.hash = "#cliente";
+        return;
+      }
+
+      if (usuario.role === "technician") {
+        location.hash = "#dashboard-technician";
         return;
       }
 
