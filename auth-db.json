@@ -1,0 +1,25 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "juan",
+            "email": "juanadmin@mail.com",
+            "password": "123456",
+            "role": "admin"
+        },
+        {
+            "id": 2,
+            "name": "alfredo",
+            "email": "tecnicoalfredo@mail.com",
+            "password": "123456",
+            "role": "tecnico"
+        },
+        {
+            "id": 3,
+            "name": "ricardo",
+            "email": "tecnicoricardo@mail.com",
+            "password": "123456",
+            "role": "tecnico"
+        }
+    ]
+}
