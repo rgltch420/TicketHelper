@@ -1,0 +1,15 @@
+{
+  "tickets": [
+    {
+      "id": "1",
+      "name": "Error al iniciar sesión",
+      "type": "incidente",
+      "description": "No puedo acceder al sistema",
+      "clientId": "3",
+      "clientName": "Cliente Demo",
+      "technicianId": null,
+      "technicianName": "",
+      "status": "pendiente"
+    }
+  ]
+}

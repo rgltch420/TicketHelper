@@ -20,6 +20,13 @@
             "email": "tecnicoricardo@mail.com",
             "password": "123456",
             "role": "tecnico"
+        },
+        {"id":4,
+         "name": "Roberto",
+         "email": "rmm@mail.com",
+         "password": "123456",
+         "role": "client"   
         }
+        
     ]
 }
