@@ -1,180 +1,102 @@
-import axios from "axios";
-
-const TICKETS_URL = "http://localhost:3002/tickets";
-
-export async function renderClientView() {
-  const user = JSON.parse(localStorage.getItem("user"));
-
+export function renderClientView() {
   const app = document.getElementById("app");
+  const usuario = JSON.parse(localStorage.getItem("user"));
 
   app.innerHTML = `
-    <section class="client-view">
-      <div class="client-header">
+    <section class="client-dashboard">
+      <header class="topbar">
         <div>
-          <h1>Panel Cliente</h1>
-          <p>Bienvenido, ${user.name || user.email}</p>
+          <h1 class="topbar-title">Ticket System</h1>
+          <p class="topbar-subtitle">Client Workspace</p>
         </div>
 
-        <button id="logout-btn">Cerrar sesión</button>
+        <div class="topbar-actions">
+          <div class="user-chip">
+            <span class="user-name">${usuario.name}</span>
+            <span class="user-role">${usuario.role}</span>
+          </div>
+          <button id="logout-btn" class="btn btn-danger">Cerrar sesión</button>
+        </div>
+      </header>
+
+      <div class="dashboard-grid">
+        <aside class="panel form-panel">
+          <div class="panel-header">
+            <h2>Create Ticket</h2>
+            <p>Reporta un incidente o solicitud</p>
+          </div>
+
+          <form id="ticket-form" class="ticket-form">
+            <input type="hidden" id="ticket-id" />
+
+            <div class="form-group">
+              <label for="ticket-name">Nombre del ticket</label>
+              <input type="text" id="ticket-name" placeholder="Ej. Error al iniciar sesión" required />
+            </div>
+
+            <div class="form-group">
+              <label for="ticket-type">Tipo de caso</label>
+              <select id="ticket-type" required>
+                <option value="">Seleccione</option>
+                <option value="incidente">Incidente</option>
+                <option value="requerimiento">Requerimiento</option>
+                <option value="soporte">Soporte</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="ticket-description">Descripción</label>
+              <textarea id="ticket-description" rows="6" placeholder="Describe el problema..." required></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="save-ticket-btn">Crear ticket</button>
+              <button type="button" class="btn btn-secondary" id="cancel-edit-btn" style="display:none;">
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </aside>
+
+        <main class="panel list-panel">
+          <div class="panel-header panel-header-inline">
+            <div>
+              <h2>My Tickets</h2>
+              <p>Consulta y administra tus tickets</p>
+            </div>
+          </div>
+
+          <div id="tickets-list" class="tickets-list">
+            <article class="ticket-card">
+              <div class="ticket-card-top">
+                <div>
+                  <h3>Problema con acceso al sistema</h3>
+                  <p class="ticket-type">Incidente</p>
+                </div>
+                <span class="status-badge status-pending">Pendiente</span>
+              </div>
+
+              <p class="ticket-description">
+                No puedo iniciar sesión con mis credenciales desde la mañana.
+              </p>
+
+              <div class="ticket-meta">
+                <span><strong>Técnico:</strong> Sin asignar</span>
+                <span><strong>Cliente:</strong> ${usuario.name}</span>
+              </div>
+
+              <div class="ticket-actions">
+                <button class="btn btn-secondary">Editar</button>
+              </div>
+            </article>
+          </div>
+        </main>
       </div>
-
-      <form id="ticket-form" class="ticket-form">
-        <h2>Crear ticket</h2>
-
-        <input type="hidden" id="ticket-id">
-
-        <label>Nombre del ticket</label>
-        <input type="text" id="ticket-name" required>
-
-        <label>Tipo de caso</label>
-        <select id="ticket-type" required>
-          <option value="">Seleccione...</option>
-          <option value="incidente">Incidente</option>
-          <option value="requerimiento">Requerimiento</option>
-          <option value="soporte">Soporte</option>
-        </select>
-
-        <label>Descripción</label>
-        <textarea id="ticket-description" required></textarea>
-
-        <button type="submit" id="save-ticket-btn">Guardar ticket</button>
-        <button type="button" id="cancel-edit-btn" style="display:none;">
-          Cancelar edición
-        </button>
-      </form>
-
-      <hr>
-
-      <h2>Mis tickets</h2>
-      <div id="tickets-list"></div>
     </section>
   `;
 
-  await loadClientTickets(user);
-  addClientEvents(user);
-}
-async function loadClientTickets(user) {
-  const ticketsList = document.getElementById("tickets-list");
-
-  try {
-    const response = await axios.get(TICKETS_URL);
-    const tickets = response.data;
-
-    const myTickets = tickets.filter((ticket) => {
-      return String(ticket.clientId) === String(user.id);
-    });
-
-    if (myTickets.length === 0) {
-      ticketsList.innerHTML = "<p>No tienes tickets registrados.</p>";
-      return;
-    }
-
-    ticketsList.innerHTML = myTickets
-      .map((ticket) => {
-        const canEdit = !ticket.technicianId || ticket.status === "cerrado";
-
-        return `
-        <div class="ticket-card">
-          <h3>${ticket.name}</h3>
-          <p><strong>Tipo:</strong> ${ticket.type}</p>
-          <p><strong>Descripción:</strong> ${ticket.description}</p>
-          <p><strong>Estado:</strong> ${ticket.status}</p>
-          <p><strong>Técnico:</strong> ${ticket.technicianName || "Sin asignar"}</p>
-
-          ${
-            canEdit
-              ? `<button class="edit-ticket-btn" data-id="${ticket.id}">
-                  Editar
-                </button>`
-              : `<small>No puedes editar este ticket porque ya tiene técnico asignado.</small>`
-          }
-        </div>
-      `;
-      })
-      .join("");
-
-    addEditEvents(myTickets);
-  } catch (error) {
-    console.error(error);
-    ticketsList.innerHTML = "<p>Error cargando tickets.</p>";
-  }
-}
-function addClientEvents(user) {
-  const form = document.getElementById("ticket-form");
-  const logoutBtn = document.getElementById("logout-btn");
-  const cancelEditBtn = document.getElementById("cancel-edit-btn");
-
-  form.addEventListener("submit", async function (event) {
-    event.preventDefault();
-
-    const ticketId = document.getElementById("ticket-id").value;
-    const name = document.getElementById("ticket-name").value;
-    const type = document.getElementById("ticket-type").value;
-    const description = document.getElementById("ticket-description").value;
-
-    try {
-      if (ticketId) {
-        await axios.patch(`${TICKETS_URL}/${ticketId}`, {
-          name,
-          type,
-          description,
-        });
-      } else {
-        await axios.post(TICKETS_URL, {
-          name,
-          type,
-          description,
-          clientId: user.id,
-          clientName: user.name || user.email,
-          technicianId: null,
-          technicianName: "",
-          status: "pendiente",
-        });
-      }
-
-      form.reset();
-      document.getElementById("ticket-id").value = "";
-      document.getElementById("save-ticket-btn").textContent = "Guardar ticket";
-      cancelEditBtn.style.display = "none";
-
-      await loadClientTickets(user);
-    } catch (error) {
-      console.error(error);
-      alert("No se pudo guardar el ticket");
-    }
-  });
-
-  logoutBtn.addEventListener("click", function () {
+  document.getElementById("logout-btn").addEventListener("click", () => {
     localStorage.removeItem("user");
     location.hash = "#login";
-  });
-
-  cancelEditBtn.addEventListener("click", function () {
-    form.reset();
-    document.getElementById("ticket-id").value = "";
-    document.getElementById("save-ticket-btn").textContent = "Guardar ticket";
-    cancelEditBtn.style.display = "none";
-  });
-}
-
-function addEditEvents(tickets) {
-  const buttons = document.querySelectorAll(".edit-ticket-btn");
-
-  buttons.forEach((button) => {
-    button.addEventListener("click", function () {
-      const ticketId = button.dataset.id;
-      const ticket = tickets.find(
-        (item) => String(item.id) === String(ticketId),
-      );
-
-      document.getElementById("ticket-id").value = ticket.id;
-      document.getElementById("ticket-name").value = ticket.name;
-      document.getElementById("ticket-type").value = ticket.type;
-      document.getElementById("ticket-description").value = ticket.description;
-
-      document.getElementById("save-ticket-btn").textContent =
-        "Actualizar ticket";
-      document.getElementById("cancel-edit-btn").style.display = "inline-block";
-    });
   });
 }

@@ -42,7 +42,7 @@ export async function router() {
       return;
     }
 
-    if (usuario.role !== "cliente") {
+    if (usuario.role !== "client") {
       app.innerHTML = `
         <h2>Acceso denegado</h2>
         <p>No tienes permisos para ingresar a la vista de cliente.</p>
@@ -54,30 +54,41 @@ export async function router() {
     return;
   }
 
-  app.innerHTML = await renderlogin();
+  if (ruta === "#login") {
+    app.innerHTML = await renderlogin();
 
-  const form = document.getElementById("login-form");
+    const form = document.getElementById("login-form");
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    const usuario = await login(email, password);
-
-    if (!usuario) {
-      alert("Credenciales incorrectas");
+    if (!form) {
+      console.error("No se encontró el formulario login-form");
       return;
     }
 
-    guardarUsuario(usuario);
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    if (usuario.role === "cliente") {
-      location.hash = "#cliente";
-      return;
-    }
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-    location.hash = "#home";
-  });
+      const usuario = await login(email, password);
+
+      if (!usuario) {
+        alert("Credenciales incorrectas");
+        return;
+      }
+
+      guardarUsuario(usuario);
+
+      if (usuario.role === "client") {
+        location.hash = "#cliente";
+        return;
+      }
+
+      location.hash = "#home";
+    });
+
+    return;
+  }
+
+  location.hash = "#login";
 }
