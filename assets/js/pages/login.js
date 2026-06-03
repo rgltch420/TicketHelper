@@ -1,6 +1,6 @@
 export async function renderlogin() {
     const respuesta = await fetch(
-        "./assets/javascript/views/login.html"
+        "./assets/js/views/login.html"
     );
 
     return await respuesta.text();
