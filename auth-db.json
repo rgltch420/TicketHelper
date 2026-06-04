@@ -2,21 +2,21 @@
     "users": [
         {
             "id": 1,
-            "name": "juan",
+            "name": "Juan",
             "email": "juanadmin@mail.com",
             "password": "123456",
             "role": "admin"
         },
         {
             "id": 2,
-            "name": "alfredo",
+            "name": "Alfredo",
             "email": "tecnicoalfredo@mail.com",
             "password": "123456",
             "role": "technician"
         },
         {
             "id": 3,
-            "name": "ricardo",
+            "name": "Ricardo",
             "email": "tecnicoricardo@mail.com",
             "password": "123456",
             "role": "technician"

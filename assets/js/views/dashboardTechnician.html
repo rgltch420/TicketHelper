@@ -1,19 +1,47 @@
 <section>
+  <h1>Panel Técnico</h1>
 
-    <h1>
-        Panel Técnico
-    </h1>
+  <h2 id="technician-name"></h2>
+  <p id="technician-email"></p>
 
-    <h2 id="technician-name">
-    </h2>
+  <button id="logout-btn">
+    Cerrar sesión
+  </button>
 
-    <p id="technician-email">
-    </p>
+  <hr>
 
-    <button id="logout-btn">
+  <h2>Crear Ticket</h2>
 
-        Cerrar sesión
+  <form id="technician-ticket-form">
+    <input
+      id="technician-ticket-name"
+      type="text"
+      placeholder="Nombre del ticket"
+      required
+    >
 
+    <select id="technician-ticket-type" required>
+      <option value="">Seleccione un tipo</option>
+      <option value="incidente">Incidente</option>
+      <option value="requerimiento">Requerimiento</option>
+      <option value="soporte">Soporte</option>
+    </select>
+
+    <textarea
+      id="technician-ticket-description"
+      placeholder="Descripción"
+      required
+    ></textarea>
+
+    <button type="submit">
+      Crear Ticket
     </button>
+  </form>
 
+  <hr>
+
+  <h2>Mis Tickets Asignados</h2>
+
+  <div id="technician-tickets-container">
+  </div>
 </section>

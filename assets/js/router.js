@@ -1,10 +1,11 @@
 import { renderlogin } from "./pages/login.js";
 import { renderhome } from "./pages/home.js";
 import { renderClientView } from "./pages/client.js";
-import { login } from "./services/authApi.js";
+import { renderRegister } from "./pages/register.js";
+import { login, createUser } from "./services/authApi.js";
 import { guardarUsuario, obtenerUsuario, eliminarUsuario } from "./utils/storage.js";
 import { renderDashboardAdmin, initDashboardAdmin } from "./pages/dashboardAdmin.js";
-import { renderDashboardTechnician } from "./pages/dashboardTechnician.js";
+import { renderDashboardTechnician, initDashboardTechnician } from "./pages/dashboardTechnician.js";
 
 export async function router() {
   const app = document.getElementById("app");
@@ -52,13 +53,19 @@ export async function router() {
     return;
   }
 
-  // DASHBOARD ADMIN
   if (ruta === "#dashboard-admin") {
-
     const usuario = obtenerUsuario();
 
     if (!usuario) {
       location.hash = "#login";
+      return;
+    }
+
+    if (usuario.role !== "admin") {
+      app.innerHTML = `
+        <h2>Acceso denegado</h2>
+        <p>No tienes permisos para ingresar al panel administrador.</p>
+      `;
       return;
     }
 
@@ -78,9 +85,7 @@ export async function router() {
     return;
   }
 
-  // DASHBOARD TECHNICIAN
   if (ruta === "#dashboard-technician") {
-
     const usuario = obtenerUsuario();
 
     if (!usuario) {
@@ -88,24 +93,93 @@ export async function router() {
       return;
     }
 
+    if (usuario.role !== "technician") {
+      app.innerHTML = `
+        <h2>Acceso denegado</h2>
+        <p>No tienes permisos para ingresar a la vista de técnico.</p>
+      `;
+      return;
+    }
+
     app.innerHTML = await renderDashboardTechnician();
 
-    document.getElementById( "technician-name").textContent = usuario.name;
-    document.getElementById("technician-email").textContent = usuario.email;
+    await initDashboardTechnician();
 
-    document.getElementById("logout-btn").addEventListener("click", () => {
+    const logoutBtn = document.getElementById("logout-btn");
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
         eliminarUsuario();
         location.hash = "#login";
       });
+    }
 
     return;
   }
 
-  // LOGIN
+  if (ruta === "#register") {
+    app.innerHTML = await renderRegister();
+
+    const form = document.getElementById("register-form");
+    const message = document.getElementById("register-message");
+    const goLoginBtn = document.getElementById("go-login-btn");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById("register-name").value.trim();
+      const email = document.getElementById("register-email").value.trim();
+      const password = document.getElementById("register-password").value.trim();
+
+      if (!name || !email || !password) {
+        message.textContent = "Todos los campos son obligatorios.";
+        return;
+      }
+
+      const users = await fetch("http://localhost:3001/users");
+      const usersList = await users.json();
+
+      const emailExists = usersList.some((user) => {
+        return user.email === email;
+      });
+
+      if (emailExists) {
+        message.textContent = "Ya existe un usuario con ese correo.";
+        return;
+      }
+
+      const newUser = {
+        name: name,
+        email: email,
+        password: password,
+        role: "client"
+      };
+
+      await createUser(newUser);
+
+      message.textContent = "Usuario registrado correctamente. Ya puedes iniciar sesión.";
+
+      form.reset();
+    });
+
+    goLoginBtn.addEventListener("click", () => {
+      location.hash = "#login";
+    });
+
+    return;
+  }
+
   if (ruta === "#login") {
     app.innerHTML = await renderlogin();
 
     const form = document.getElementById("login-form");
+    const goRegisterBtn = document.getElementById("go-register-btn");
+
+    if (goRegisterBtn) {
+      goRegisterBtn.addEventListener("click", () => {
+        location.hash = "#register";
+      });
+    }
 
     if (!form) {
       console.error("No se encontró el formulario login-form");
@@ -149,5 +223,4 @@ export async function router() {
   }
 
   location.hash = "#login";
-  
 }
