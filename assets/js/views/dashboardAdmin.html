@@ -1,30 +1,99 @@
 <section>
 
     <h1>
-        Dashboard Administrador
+        Panel Administrador
     </h1>
 
-    <p>
-        Bienvenido Administrador
-    </p>
+    <button id="logout-btn">
+        Cerrar sesión
+    </button>
 
-    <div>
+    <hr>
 
-        <h3>
-            Gestión de Tickets
-        </h3>
+    <h2>
+        Crear Ticket
+    </h2>
 
-        <p>
-            Desde aquí podrás administrar
-            tickets, técnicos y usuarios.
-        </p>
+    <form id="ticket-form">
+
+        <input
+            type="text"
+            id="ticket-name"
+            placeholder="Nombre ticket"
+            required
+        >
+
+        <select id="ticket-type" required>
+
+            <option value="">
+                Seleccione un tipo
+            </option>
+
+            <option value="incidente">
+                Incidente
+            </option>
+
+            <option value="requerimiento">
+                Requerimiento
+            </option>
+
+            <option value="soporte">
+                Soporte
+            </option>
+
+        </select>
+
+        <label>
+            Técnico asignado
+        </label>
+
+        <select id="technician-select">
+            <option value="">
+                Seleccione técnico
+            </option>
+        </select>
+
+        <label>
+            Estado
+        </label>
+
+        <select id="status-select">
+            <option value="pendiente">
+                Pendiente
+            </option>
+        </select>
+
+        <label>
+            Cliente
+        </label>
+
+        <select id="client-select">
+            <option value="">
+                Seleccione cliente
+            </option>
+
+        </select>
+
+        <textarea
+            id="ticket-description"
+            placeholder="Descripción"
+            required
+        ></textarea>
+
+        <button type="submit">
+            Guardar Ticket
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h2>
+        Lista de Tickets
+    </h2>
+
+    <div id="tickets-container">
 
     </div>
-
-    <button id="logout-btn">
-
-        Cerrar sesión
-
-    </button>
 
 </section>

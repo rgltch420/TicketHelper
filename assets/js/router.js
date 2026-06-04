@@ -2,14 +2,8 @@ import { renderlogin } from "./pages/login.js";
 import { renderhome } from "./pages/home.js";
 import { renderClientView } from "./pages/client.js";
 import { login } from "./services/authApi.js";
-import {
-  guardarUsuario,
-  obtenerUsuario,
-  eliminarUsuario,
-} from "./utils/storage.js";
-
-import { renderDashboardAdmin } from "./pages/dashboardAdmin.js";
-
+import { guardarUsuario, obtenerUsuario, eliminarUsuario } from "./utils/storage.js";
+import { renderDashboardAdmin, initDashboardAdmin } from "./pages/dashboardAdmin.js";
 import { renderDashboardTechnician } from "./pages/dashboardTechnician.js";
 
 export async function router() {
@@ -70,6 +64,8 @@ export async function router() {
 
     app.innerHTML = await renderDashboardAdmin();
 
+    await initDashboardAdmin();
+
     const logoutBtn = document.getElementById("logout-btn");
 
     if (logoutBtn) {
@@ -95,7 +91,6 @@ export async function router() {
     app.innerHTML = await renderDashboardTechnician();
 
     document.getElementById( "technician-name").textContent = usuario.name;
-
     document.getElementById("technician-email").textContent = usuario.email;
 
     document.getElementById("logout-btn").addEventListener("click", () => {
@@ -154,4 +149,5 @@ export async function router() {
   }
 
   location.hash = "#login";
+  
 }
