@@ -331,3 +331,288 @@ body {
     width: 100%;
   }
 }
+/* ===========================
+   JIRA DARK BOARD GLOBAL
+=========================== */
+
+.jira-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.jira-column {
+  background: #111827;
+  border: 1px solid #2f3747;
+  border-radius: 14px;
+  padding: 14px;
+  min-height: 350px;
+}
+
+.jira-column h3 {
+  margin: 0 0 14px;
+  color: #f3f4f6;
+  font-size: 1rem;
+  border-bottom: 1px solid #374151;
+  padding-bottom: 10px;
+}
+
+.jira-ticket {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+  color: #e5e7eb;
+}
+
+.jira-ticket h4 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.jira-ticket p {
+  margin: 6px 0;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+
+.jira-ticket small {
+  color: #9ca3af;
+}
+
+.jira-ticket-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.jira-empty {
+  color: #6b7280;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 18px 8px;
+  border: 1px dashed #374151;
+  border-radius: 10px;
+}
+
+.badge-status {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.badge-pendiente {
+  background: #2b2b2b;
+  color: #d1d5db;
+  border: 1px solid #4b5563;
+}
+
+.badge-asignado {
+  background: #1e293b;
+  color: #bfdbfe;
+  border: 1px solid #475569;
+}
+
+.badge-proceso {
+  background: #3b2f14;
+  color: #fde68a;
+  border: 1px solid #92400e;
+}
+
+.badge-solucionado {
+  background: #10251a;
+  color: #86efac;
+  border: 1px solid #166534;
+}
+
+@media (max-width: 1100px) {
+  .jira-board {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .jira-board {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ===========================
+   AUTH LOGIN / REGISTER
+=========================== */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at top, #1f2937 0%, #0f1115 35%, #090b10 100%);
+  padding: 24px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: #161a22;
+  border: 1px solid #2a2f3a;
+  border-radius: 18px;
+  padding: 34px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+}
+
+.auth-card h1 {
+  margin: 0;
+  color: #f9fafb;
+  font-size: 2rem;
+}
+
+.auth-card p {
+  color: #9ca3af;
+  margin: 8px 0 24px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-form input {
+  background: #0f1115;
+  color: #f9fafb;
+  border: 1px solid #313844;
+  border-radius: 10px;
+  padding: 13px 14px;
+  outline: none;
+}
+
+.auth-form input:focus {
+  border-color: #6b7280;
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.2);
+}
+
+.auth-secondary-btn {
+  width: 100%;
+  margin-top: 12px;
+}
+
+/* ===========================
+   ADMIN / TECHNICIAN LAYOUT
+=========================== */
+
+.admin-dashboard,
+.technician-dashboard {
+  min-height: 100vh;
+  background: #0f1115;
+  color: #e5e7eb;
+  padding: 24px;
+}
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+  margin-top: 22px;
+}
+
+.admin-layout .form-panel {
+  align-self: start;
+}
+
+.admin-layout .list-panel {
+  min-height: 500px;
+}
+
+/* ===========================
+   GLOBAL FORM IMPROVEMENTS
+=========================== */
+
+.ticket-form input,
+.ticket-form select,
+.ticket-form textarea {
+  width: 100%;
+  background: #0f1115;
+  color: #f3f4f6;
+  border: 1px solid #313844;
+  border-radius: 10px;
+  padding: 12px 14px;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.ticket-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.ticket-form input:focus,
+.ticket-form select:focus,
+.ticket-form textarea:focus {
+  border-color: #6b7280;
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.2);
+}
+
+.ticket-form button {
+  margin-top: 4px;
+}
+
+/* ===========================
+   JIRA BOARD POLISH
+=========================== */
+
+.jira-board {
+  width: 100%;
+}
+
+.jira-column {
+  background: #111827;
+}
+
+.jira-ticket {
+  background: #202938;
+}
+
+.jira-ticket-actions button,
+.jira-ticket-actions select {
+  background: #1f2430;
+  color: #e5e7eb;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.jira-ticket-actions button:hover,
+.jira-ticket-actions select:hover {
+  background: #2b3342;
+}
+
+/* ===========================
+   RESPONSIVE ADMIN / TECH
+=========================== */
+
+@media (max-width: 960px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-dashboard,
+  .technician-dashboard {
+    padding: 16px;
+  }
+
+  .auth-card {
+    padding: 24px;
+  }
+}
+

@@ -1,36 +1,39 @@
-<section>
-  <h1>Registro de Cliente</h1>
+<section class="auth-page">
+  <div class="auth-card">
+    <h1>Registro de Cliente</h1>
+    <p>Crea una cuenta para reportar tickets</p>
 
-  <form id="register-form">
-    <input
-      id="register-name"
-      type="text"
-      placeholder="Nombre"
-      required
-    >
+    <form id="register-form" class="auth-form">
+      <input
+        id="register-name"
+        type="text"
+        placeholder="Nombre"
+        required
+      >
 
-    <input
-      id="register-email"
-      type="email"
-      placeholder="Email"
-      required
-    >
+      <input
+        id="register-email"
+        type="email"
+        placeholder="Email"
+        required
+      >
 
-    <input
-      id="register-password"
-      type="password"
-      placeholder="Password"
-      required
-    >
+      <input
+        id="register-password"
+        type="password"
+        placeholder="Password"
+        required
+      >
 
-    <button type="submit">
-      Registrarme
+      <button type="submit" class="btn btn-primary">
+        Registrarme
+      </button>
+    </form>
+
+    <button id="go-login-btn" type="button" class="btn btn-secondary auth-secondary-btn">
+      Volver al login
     </button>
-  </form>
 
-  <p id="register-message"></p>
-
-  <button id="go-login-btn" type="button">
-    Volver al login
-  </button>
+    <p id="register-message"></p>
+  </div>
 </section>

@@ -1,47 +1,72 @@
-<section>
-  <h1>Panel Técnico</h1>
+<section class="technician-dashboard">
+  <header class="topbar">
+    <div>
+      <h1 class="topbar-title">Panel Técnico</h1>
+      <p class="topbar-subtitle">Gestión de tickets asignados</p>
+    </div>
 
-  <h2 id="technician-name"></h2>
-  <p id="technician-email"></p>
+    <div class="topbar-actions">
+      <div class="user-chip">
+        <span id="technician-name" class="user-name"></span>
+        <span id="technician-email" class="user-role"></span>
+      </div>
 
-  <button id="logout-btn">
-    Cerrar sesión
-  </button>
+      <button id="logout-btn" class="btn btn-danger">
+        Cerrar sesión
+      </button>
+    </div>
+  </header>
 
-  <hr>
+  <div class="admin-layout">
+    <aside class="panel form-panel">
+      <div class="panel-header">
+        <h2>Crear Ticket</h2>
+        <p>El ticket quedará asignado automáticamente a ti</p>
+      </div>
 
-  <h2>Crear Ticket</h2>
+      <form id="technician-ticket-form" class="ticket-form">
+        <div class="form-group">
+          <label for="technician-ticket-name">Nombre del ticket</label>
+          <input
+            id="technician-ticket-name"
+            type="text"
+            placeholder="Nombre del ticket"
+            required
+          >
+        </div>
 
-  <form id="technician-ticket-form">
-    <input
-      id="technician-ticket-name"
-      type="text"
-      placeholder="Nombre del ticket"
-      required
-    >
+        <div class="form-group">
+          <label for="technician-ticket-type">Tipo</label>
+          <select id="technician-ticket-type" required>
+            <option value="">Seleccione un tipo</option>
+            <option value="incidente">Incidente</option>
+            <option value="requerimiento">Requerimiento</option>
+            <option value="soporte">Soporte</option>
+          </select>
+        </div>
 
-    <select id="technician-ticket-type" required>
-      <option value="">Seleccione un tipo</option>
-      <option value="incidente">Incidente</option>
-      <option value="requerimiento">Requerimiento</option>
-      <option value="soporte">Soporte</option>
-    </select>
+        <div class="form-group">
+          <label for="technician-ticket-description">Descripción</label>
+          <textarea
+            id="technician-ticket-description"
+            placeholder="Descripción"
+            required
+          ></textarea>
+        </div>
 
-    <textarea
-      id="technician-ticket-description"
-      placeholder="Descripción"
-      required
-    ></textarea>
+        <button type="submit" class="btn btn-primary">
+          Crear Ticket
+        </button>
+      </form>
+    </aside>
 
-    <button type="submit">
-      Crear Ticket
-    </button>
-  </form>
+    <main class="panel list-panel">
+      <div class="panel-header">
+        <h2>Mis Tickets Asignados</h2>
+        <p>Actualiza el estado de tus casos</p>
+      </div>
 
-  <hr>
-
-  <h2>Mis Tickets Asignados</h2>
-
-  <div id="technician-tickets-container">
+      <div id="technician-tickets-container"></div>
+    </main>
   </div>
 </section>

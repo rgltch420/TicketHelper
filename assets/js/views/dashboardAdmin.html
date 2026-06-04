@@ -1,99 +1,87 @@
-<section>
+<section class="admin-dashboard">
+  <header class="topbar">
+    <div>
+      <h1 class="topbar-title">Panel Administrador</h1>
+      <p class="topbar-subtitle">Gestión general de tickets</p>
+    </div>
 
-    <h1>
-        Panel Administrador
-    </h1>
+    <div class="topbar-actions">
+      <div class="user-chip">
+        <span class="user-name">Admin</span>
+        <span class="user-role">ADMIN</span>
+      </div>
 
-    <button id="logout-btn">
+      <button id="logout-btn" class="btn btn-danger">
         Cerrar sesión
-    </button>
+      </button>
+    </div>
+  </header>
 
-    <hr>
+  <div class="admin-layout">
+    <aside class="panel form-panel">
+      <div class="panel-header">
+        <h2>Crear Ticket</h2>
+        <p>Registra o edita tickets del sistema</p>
+      </div>
 
-    <h2>
-        Crear Ticket
-    </h2>
-
-    <form id="ticket-form">
-
-        <input
-            type="text"
+      <form id="ticket-form" class="ticket-form">
+        <div class="form-group">
+          <label for="ticket-name">Nombre del ticket</label>
+          <input
             id="ticket-name"
+            type="text"
             placeholder="Nombre ticket"
             required
-        >
+          >
+        </div>
 
-        <select id="ticket-type" required>
+        <div class="form-group">
+          <label for="ticket-type">Tipo</label>
+          <select id="ticket-type" required>
+            <option value="">Seleccione un tipo</option>
+            <option value="incidente">Incidente</option>
+            <option value="requerimiento">Requerimiento</option>
+            <option value="soporte">Soporte</option>
+          </select>
+        </div>
 
-            <option value="">
-                Seleccione un tipo
-            </option>
+        <div class="form-group">
+          <label for="technician-select">Técnico asignado</label>
+          <select id="technician-select"></select>
+        </div>
 
-            <option value="incidente">
-                Incidente
-            </option>
+        <div class="form-group">
+          <label for="status-select">Estado</label>
+          <select id="status-select"></select>
+        </div>
 
-            <option value="requerimiento">
-                Requerimiento
-            </option>
+        <div class="form-group">
+          <label for="client-select">Cliente</label>
+          <select id="client-select"></select>
+        </div>
 
-            <option value="soporte">
-                Soporte
-            </option>
-
-        </select>
-
-        <label>
-            Técnico asignado
-        </label>
-
-        <select id="technician-select">
-            <option value="">
-                Seleccione técnico
-            </option>
-        </select>
-
-        <label>
-            Estado
-        </label>
-
-        <select id="status-select">
-            <option value="pendiente">
-                Pendiente
-            </option>
-        </select>
-
-        <label>
-            Cliente
-        </label>
-
-        <select id="client-select">
-            <option value="">
-                Seleccione cliente
-            </option>
-
-        </select>
-
-        <textarea
+        <div class="form-group">
+          <label for="ticket-description">Descripción</label>
+          <textarea
             id="ticket-description"
             placeholder="Descripción"
             required
-        ></textarea>
+          ></textarea>
+        </div>
 
-        <button type="submit">
-            Guardar Ticket
+        <button type="submit" class="btn btn-primary">
+          Guardar Ticket
         </button>
+      </form>
+    </aside>
 
-    </form>
+    <main class="panel list-panel">
+      <div class="panel-header">
+        <h2>Lista de Tickets</h2>
+        <p>Tablero general del administrador</p>
+      </div>
 
-    <hr>
-
-    <h2>
-        Lista de Tickets
-    </h2>
-
-    <div id="tickets-container">
-
-    </div>
-
+      <div id="tickets-container"></div>
+    </main>
+  </div>
 </section>

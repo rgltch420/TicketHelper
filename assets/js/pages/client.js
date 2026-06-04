@@ -173,56 +173,19 @@ async function loadClientTickets(usuario) {
       return String(ticket.clientId) === String(usuario.id);
     });
 
-    if (myTickets.length === 0) {
-      ticketsList.innerHTML = `
-        <div class="empty-state">
-          <h3>No tienes tickets registrados</h3>
-          <p>Crea tu primer ticket desde el formulario lateral.</p>
-        </div>
-      `;
-      return;
-    }
+    const pendientes = myTickets.filter(ticket => ticket.status === "pendiente");
+    const asignados = myTickets.filter(ticket => ticket.status === "asignado");
+    const comenzados = myTickets.filter(ticket => ticket.status === "en proceso");
+    const solucionados = myTickets.filter(ticket => ticket.status === "solucionado");
 
-    ticketsList.innerHTML = myTickets.map((ticket) => {
-      const canEdit = canClientEdit(ticket);
-      const statusClass = getStatusClass(ticket.status);
-
-      return `
-        <article class="ticket-card">
-          <div class="ticket-card-top">
-            <div>
-              <h3>${ticket.name}</h3>
-              <p class="ticket-type">${ticket.type}</p>
-            </div>
-
-            <span class="status-badge ${statusClass}">
-              ${ticket.status}
-            </span>
-          </div>
-
-          <p class="ticket-description">
-            ${ticket.description}
-          </p>
-
-          <div class="ticket-meta">
-            <span><strong>Técnico:</strong> ${ticket.technicianName || "Sin asignar"}</span>
-            <span><strong>Cliente:</strong> ${ticket.clientName}</span>
-          </div>
-
-          <div class="ticket-actions">
-            ${
-              canEdit
-                ? `<button class="btn btn-secondary edit-ticket-btn" data-id="${ticket.id}">
-                    Editar
-                  </button>`
-                : `<small class="blocked-text">
-                    No editable. El ticket ya fue asignado a un técnico.
-                  </small>`
-            }
-          </div>
-        </article>
-      `;
-    }).join("");
+    ticketsList.innerHTML = `
+      <div class="jira-board">
+        ${renderClientColumn("Pendiente", pendientes)}
+        ${renderClientColumn("Asignado", asignados)}
+        ${renderClientColumn("Comenzado", comenzados)}
+        ${renderClientColumn("Solucionado", solucionados)}
+      </div>
+    `;
 
     addEditEvents(myTickets);
 
@@ -236,6 +199,58 @@ async function loadClientTickets(usuario) {
       </div>
     `;
   }
+}
+
+function renderClientColumn(title, tickets) {
+  let content = "";
+
+  if (tickets.length === 0) {
+    content = `<div class="jira-empty">Sin tickets</div>`;
+  } else {
+    tickets.forEach((ticket) => {
+      const canEdit = canClientEdit(ticket);
+
+      content += `
+        <div class="jira-ticket">
+          <h4>${ticket.name}</h4>
+
+          <p><strong>Tipo:</strong> ${ticket.type}</p>
+          <p><strong>Técnico:</strong> ${ticket.technicianName || "Sin asignar"}</p>
+          <p><strong>Descripción:</strong> ${ticket.description}</p>
+
+          <span class="badge-status ${getStatusClass(ticket.status)}">
+            ${getStatusLabel(ticket.status)}
+          </span>
+
+          <div class="jira-ticket-actions">
+            ${canEdit
+          ? `<button class="btn btn-secondary edit-ticket-btn" data-id="${ticket.id}">
+                    Editar
+                  </button>`
+          : `<small class="blocked-text">
+                    No editable
+                  </small>`
+        }
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  return `
+    <section class="jira-column">
+      <h3>${title}</h3>
+      ${content}
+    </section>
+  `;
+}
+
+function getStatusLabel(status) {
+  if (status === "en proceso") {
+    return "Comenzado";
+  }
+
+  return status;
 }
 
 function addEditEvents(tickets) {
@@ -280,12 +295,16 @@ function resetForm() {
 
 function getStatusClass(status) {
   if (status === "solucionado" || status === "cerrado") {
-    return "status-done";
+    return "badge-solucionado";
   }
 
-  if (status === "asignado" || status === "en proceso") {
-    return "status-process";
+  if (status === "asignado") {
+    return "badge-asignado";
   }
 
-  return "status-pending";
+  if (status === "en proceso") {
+    return "badge-proceso";
+  }
+
+  return "badge-pendiente";
 }

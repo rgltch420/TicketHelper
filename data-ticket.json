@@ -1,4 +1,16 @@
 {
-  "tickets": [],
+  "tickets": [
+    {
+      "name": "Arreglo de telefono",
+      "type": "requerimiento",
+      "description": "urgente se me daño",
+      "technicianId": "2",
+      "technicianName": "Alfredo",
+      "clientId": "4",
+      "clientName": "Roberto",
+      "status": "solucionado",
+      "id": "ddV0_gYuCjs"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
